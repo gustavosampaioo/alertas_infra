@@ -1,5 +1,6 @@
 import streamlit as st
-from datetime import datetime
+from datetime import datetime, time
+import pytz
 import pyperclip
 
 # Função para gerar o texto
@@ -102,16 +103,16 @@ prioridade = st.selectbox("Prioridade:", ["BAIXA", "MÉDIA", "ALTA", "URGENTE"])
 # Data e Hora de Início
 col1, col2 = st.columns(2)
 with col1:
-    data_inicio = st.date_input("Data de Início:", datetime.now())
+    data_inicio = st.date_input("Data de Início:", datetime.now(pytz.timezone('America/Sao_Paulo')).date())
 with col2:
-    hora_inicio = st.time_input("Hora de Início:", datetime.now().time())
+    hora_inicio = st.time_input("Hora de Início:", time(0, 0))
 
 # Data e Hora de Fim
 col3, col4 = st.columns(2)
 with col3:
-    data_fim = st.date_input("Data de Fim:", datetime.now())
+    data_fim = st.date_input("Data de Fim:", datetime.now(pytz.timezone('America/Sao_Paulo')).date())
 with col4:
-    hora_fim = st.time_input("Hora de Fim:", datetime.now().time())
+    hora_fim = st.time_input("Hora de Fim:", time(0, 0))
 
 # Descrição
 descricao = st.selectbox("Descrição:", list(descricao_map.keys()))
