@@ -134,18 +134,29 @@ extras = st.text_input("Informações Complementares:")
 
 # Botão para gerar o texto
 if st.button("Gerar Texto"):
-    texto_gerado = gerar_texto(setor, prioridade, data_inicio, hora_inicio.strftime("%H:%M"), data_fim, hora_fim.strftime("%H:%M"), descricao, numero_os, motivo, extras, cidade, regioes_selecionadas)
-    st.text_area("Texto Gerado:", texto_gerado, height=200)
+    texto_gerado = gerar_texto(setor, prioridade, 
+                               data_inicio.strftime("%d/%m/%Y"), hora_inicio.strftime("%H:%M"), 
+                               data_fim.strftime("%d/%m/%Y"), hora_fim.strftime("%H:%M"), 
+                               descricao, numero_os, motivo, extras, cidade, regioes_selecionadas)
     
+    st.text_area("Texto Gerado:", texto_gerado, height=200)
+
+    # Adiciona o texto ao histórico
+    if 'historico' not in st.session_state:
+        st.session_state.historico = []
+    
+    st.session_state.historico.insert(0, texto_gerado)  # Adiciona no início da lista
+
     # Botão para copiar o texto
     if st.button("Copiar Texto"):
         pyperclip.copy(texto_gerado)
         st.success("Texto copiado para a área de transferência!")
 
-# Histórico (simplificado)
+# Histórico
 if st.button("Abrir Histórico"):
     st.write("Histórico de textos gerados:")
-    if 'historico' not in st.session_state:
-        st.session_state.historico = []
-    for item in st.session_state.historico:
-        st.text(item)
+    if 'historico' in st.session_state and st.session_state.historico:
+        for item in st.session_state.historico:
+            st.text_area("", item, height=100)
+    else:
+        st.write("Nenhum histórico disponível.")
