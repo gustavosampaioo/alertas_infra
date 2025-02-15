@@ -149,8 +149,11 @@ if st.button("Gerar Texto"):
 
     # Botão para copiar o texto
     if st.button("Copiar Texto"):
-        pyperclip.copy(texto_gerado)
-        st.success("Texto copiado para a área de transferência!")
+        try:
+            pyperclip.copy(texto_gerado)
+            st.success("Texto copiado para a área de transferência!")
+        except Exception as e:
+            st.error(f"Erro ao copiar o texto: {e}")
 
 # Histórico
 if st.button("Abrir Histórico"):
